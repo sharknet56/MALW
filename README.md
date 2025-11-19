@@ -2,7 +2,7 @@
 This is a project for the Malware course from the Master in cybersecurity of UPC (Polytechnic University of Catalonia)
 
 ## Disclaimer
-This project is only for educational pruposes
+This project is only for educational proposes
 
 ## The project
 In this project we develop a malware with a set of exploits.
@@ -25,3 +25,16 @@ Finally, the last step is to take full control of the server by escalating privi
 - [CVE-2025-32463](https://nvd.nist.gov/vuln/detail/CVE-2025-32463), the code for the exploit is based on the PoC in [here](https://www.exploit-db.com/exploits/52352)
 
 ## CVE-2022-30190
+### Instructions to run the exploit
+Run:
+```
+python3 follina.py
+```
+This will run a server with an endpoint to serve the index.html that contains the exploit. This script also generates the malicious document that will call the endpoint.
+
+Then run a http server to serve an payload, e.g.:
+```
+python -m http.server 8080
+```
+
+You will need a Windows machine with a vulnerable version of Office. 
