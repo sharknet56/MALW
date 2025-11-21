@@ -2,14 +2,14 @@
 This is a project for the Malware course from the Master in cybersecurity of UPC (Polytechnic University of Catalonia)
 
 ## Disclaimer
-This project is only for educational proposes
+This project is only for educational purposes
 
 ## The project
 In this project we develop a malware with a set of exploits.
 The idea of our project consists of compromising and taking control of a Moodle server.
 The story we want to tell is that we are students of a school that uses Moodle as LMS. Then a teacher puts some homework for us, and opens a submission request on Moodle. And because we really hate doing homeworks, we decide to send a malicious document disguised as homework and hack Moodle.
 
-The malicious document will be a word document that invokes the MSDT (Microsoft Support Diagnostic Tool) and exploits it to perform RCE (Remote Code Execution), the exploit is based on the CVE-2022-30190 and a PoC we found and tested that works on a Windows 10 and a local installation (an archived ISO image) of Office 2013 (It's a bit old, but the vulnerability is patched if you try to install Office from MS servers).
+The malicious document will be a word document that invokes the MSDT (Microsoft Support Diagnostic Tool) and exploits it to perform RCE (Remote Code Execution), the exploit is based on the CVE-2022-30190 and a PoC we found and tested that works on a Windows 10 and a local installation (an archived ISO image) of Office 2021 (The vulnerability is patched if you try to install Office from MS servers).
 
 Then after the teacher opens the malicious Word document, he will see the MSDT window pop up. He will think it is a bit weird, but he just closes it. At this point, in the background we have already executed the next stage of our plan to hack Moodle.
 
