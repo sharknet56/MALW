@@ -155,7 +155,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-
+follina.py
 CVE-2022-30190/follina.py
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
