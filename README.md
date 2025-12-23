@@ -2,24 +2,38 @@
 This is a project for the Malware course from the Master in cybersecurity of UPC (Polytechnic University of Catalonia)
 
 ## Disclaimer
-This project is only for educational purposes
+This project is only used for educational purposes
 
-## The project
-In this project we develop a malware with a set of exploits.
-The idea of our project consists of compromising and taking control of a Moodle server.
-The story we want to tell is that we are students of a school that uses Moodle as LMS. Then a teacher puts some homework for us, and opens a submission request on Moodle. And because we really hate doing homeworks, we decide to send a malicious document disguised as homework and hack Moodle.
+## Motivation
+We are master's students at a certain university and we are reaching the end of the semester. There is one specific subject, called Application Security, where the exam went notably bad. The end of the semester is approaching, and if the second exam is going to be as bad as the first one, we will be in big trouble! For this reason we need a way to ensure a good grade in the exams. We are 5 students with the same goal, to upgrade our grades so we don’t fail the subject, so we created our own hacker group.
 
-The malicious document will be a word document that invokes the MSDT (Microsoft Support Diagnostic Tool) and exploits it to perform RCE (Remote Code Execution), the exploit is based on the CVE-2022-30190 and a PoC we found and tested that works on a Windows 10 and a local installation (an archived ISO image) of Office 2021 (The vulnerability is patched if you try to install Office from MS servers).
+At this point, we learned some malicious cybersecurity tricks (from a certain course in the master’s degree). We developed a plan to attack the university's infrastructure. The main target is Atenea, where grades are posted. We know that Atenea is based on an LMS called Moodle. If we manage to compromise the Moodle server, we can change our grade for the rest of the master's program, or even charge students to change their grades, steal exams or future assignments, etc. Basically, easy money! :D
 
-Then after the teacher opens the malicious Word document, he will see the MSDT window pop up. He will think it is a bit weird, but he just closes it. At this point, in the background we have already executed the next stage of our plan to hack Moodle.
+Everything is planned, the attack will be executed on Christmas, when Atenea admins are relaxed (at home and probably drunk). Teachers won’t be paying much attention either (probably because they're drunk too). So nobody will notice if some student's grade suddenly transforms to a 10 (or a 9.8 to be more stealthy).
 
-This stage consists of exploiting a Moodle vulnerability based on CVE-2024-43425. The Moodle vulnerability requires the capability to add/update questions in Moodle, and this is the reason we need to execute the exploit from a user that has those permissions, like a teacher. We found a PoC in exploit DB, which we haven’t tested yet, but if it works we could have RCE on the Moodle server.
+## Attack architecture
+Investigating on how to compromise a moodle server, we found a RCE (Remote Code Execution) exploit that is suitable to gain access into the moodle server. But this vulnerability requires the capability to add/update questions in Moodle (permissions that a teacher has).
 
-If everything worked at this point, we could have the Moodle server execute whatever we want, for example a reverse shell so we can control the server remotely.
+Therefore, we need a way to supplant the teacher’s identity. How are we going to do it? With social engineering. We will send malware disguised as an assignment report to the teacher through Atenea. The teacher will download and open the document and it will trigger an RCE exploit in the teacher’s machine.
 
-Finally, the last step is to take full control of the server by escalating privileges using a sudo vulnerability, like CVE-2025-32463.
+Once we are able to execute arbitrary code in the teacher’s machine, we make him execute the exploit to Moodle with his permissions.
 
-## Exploits
+Finally, with RCE in Moodle we will send a reverse shell back to us, the attackers, be able to control the system remotely.
+
+The steps are:
+1. Delivery of malicious word document: The document is disguised as an assignment and delivered via moodle submission. The document will trigger a Remote Code Execution (RCE) on the teacher's machine.
+2. Fooling the teacher: Teacher downloads the document from moodle, and opens it, therefore triggering a RCE in his machine.
+3. Teacher's machine compromised: The teacher's machine will execute a prepared payload that will exploit the RCE vulnerability in moodle (Using his account).
+4. Remote shell: We trick the moodle server to send us a reverse shell, using the RCE exploit executed by the teacher.
+
+Upon establishing the reverse shell, we gained access to the server with the privileges of the web service user (www-data). However, this user has restricted permissions and cannot modify system configurations or access the core Moodle database credentials required to inject a new administrator. To overcome this, we performed a Privilege Escalation phase.
+
+As a final step to achieve our goal, we create an admin user in Atenea that is able to impersonate any user in Atenea. We will use this user to change our grades in Application Security :). Merry Christmas Application Security!
+
+For this final step we have a php script (createadminuser.php) to create the admin user inside Moodle/Atenea.
+
+## Exploits used
 - [CVE-2022-30190](https://nvd.nist.gov/vuln/detail/cve-2022-30190), the code for the exploit is based on the PoC in [here](https://github.com/JohnHammond/msdt-follina)
 - [CVE-2024-43425](https://nvd.nist.gov/vuln/detail/CVE-2024-43425), the code for the exploit is based on the PoC in [here](https://www.exploit-db.com/exploits/52350)
 - [CVE-2025-32463](https://nvd.nist.gov/vuln/detail/CVE-2025-32463), the code for the exploit is based on the PoC in [here](https://www.exploit-db.com/exploits/52352)
+- [Singularity rootkit](https://github.com/MatheuZSecurity/Singularity)

